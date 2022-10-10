@@ -1,0 +1,24 @@
+version: 0.2
+
+run-as: benx
+
+env:
+  variables:
+     HOME: /home/benx
+     SERVICE_NAME: lesserafimapi
+     BRANCH: main
+     JAVA_HOME: /usr/lib/jvm/java-11-openjdk-11.0.7.10-4.amzn2.0.1.x86_64/
+  parameter-store:
+     GITHUB_TOKEN: "/CodeBuild/GITHUB_TOKEN"
+
+phases:
+  install:
+    commands:
+      - git checkout ${BRANCH}
+      - 'echo "SHA: $(git rev-parse --short=8 HEAD) [$(git branch --show-current)]"'
+  build:
+    commands:
+      - bash codebuild_build.sh
+  post_build:
+    commands:
+      - echo "Build is done. "
